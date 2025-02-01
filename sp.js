@@ -215,7 +215,7 @@ document.addEventListener("click", async (event) => {
 
 //to fetch all cards
 async function carrds() {
-    let fold = await fetch(`/songs/`)
+    let fold = await fetch(`songs/`)
     let a = await fold.text()
     diiv = document.createElement("div")
     diiv.innerHTML = a;
@@ -229,6 +229,7 @@ async function carrds() {
     // to display cards
     let new_card = document.getElementById("new_card")
     for (const kard of cards) {
+        console.log(kard)
         console.log( "hi "+kard.split("/")[4])
         let name = kard.split("/")[4].replaceAll("%20", " ");
         let data = name.replaceAll(" ", "%20")
