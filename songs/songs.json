@@ -11,6 +11,30 @@
         "folder": "Bloody Mary",
         "url": "songs/Bloody Mary/audio.mp3",
         "image": "songs/Bloody Mary/Bloody Mary_photo.jpg"
+      },
+      {
+        "name": "Dandelions",
+        "folder": "Dandelions",
+        "url": "songs/Dandelions/audio.mp3",
+        "image": "songs/Dandelions/Dandelions_photo.jpg"
+      },
+      {
+        "name": "Enemy",
+        "folder": "Enemy",
+        "url": "songs/Enemy/audio.mp3",
+        "image": "songs/Enemy/Enemy_photo.jpg"
+      },
+      {
+        "name": "History",
+        "folder": "History",
+        "url": "songs/History/audio.mp3",
+        "image": "songs/History/History_photo.jpg"
+      },
+      {
+        "name": "Night Changes",
+        "folder": "Night Changes",
+        "url": "songs/Night Changes/audio.mp3",
+        "image": "songs/Night Changes/Night Changes_photo.jpg"
       }
     ]
   }

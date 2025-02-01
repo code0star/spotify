@@ -1,0 +1,10 @@
+{
+    "songs": [
+      {
+        "name": "Enemy",
+        "file": "audio.mp3",
+        "image": "Enemy_photo.jpg",
+        "artist": "Gaurav"
+      }
+    ]
+  }

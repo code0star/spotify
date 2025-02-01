@@ -1,0 +1,10 @@
+{
+    "songs": [
+      {
+        "name": "History",
+        "file": "audio.mp3",
+        "image": "History_photo.jpg",
+        "artist": "Gaurav"
+      }
+    ]
+  }

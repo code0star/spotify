@@ -1,0 +1,10 @@
+{
+    "songs": [
+      {
+        "name": "Dandelions",
+        "file": "audio.mp3",
+        "image": "Dandelions.jpg",
+        "artist": "Gaurav"
+      }
+    ]
+  }
