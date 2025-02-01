@@ -8,7 +8,7 @@ async function getsongs(folder) {
     
     console.log("Fetching songs from:", folder);
     
-        let response = await fetch(`/spotify/songs/${folder}/songs.json`);
+        let response = await fetch(`/spotify/songs/${folder}/songs2.json`);
         let data = await response.json();
         console.log("Songs fetched successfully:", data);
 
