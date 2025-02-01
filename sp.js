@@ -74,7 +74,7 @@ function attachEventListeners() {
 const playMusic = (track) => {
     console.log(track)
     console.log("Playing:", track);
-    curr_song.src = `/spotify/songs/${track}/audio.mp3`;
+    curr_song.src = `songs/${track}/audio.mp3`;
     curr_song.play();
     play.src = "img/pause.svg";
     document.querySelector(".song_info").innerHTML = `${track}<br>by ${"Gaurav"}`;
