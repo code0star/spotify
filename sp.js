@@ -6,12 +6,25 @@ let list = [];
 
 async function getsongs(folder) {
     console.log("Fetching songs from:", folder);
+    console.log(`Fetching songs from: ${folder}`);
+
+    try {
+        let response = await fetch(`/songs/${folder}/songs.json`);
+
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
+        }
+
+        let data = await response.json();
+        console.log("Songs fetched successfully:", data);
+    } catch (error) {
+        console.error("Error fetching songs:", error);
+    }
+
 
     try {
         // ✅ Fetch the JSON file inside the folder
-        let response = await fetch(`/songs/${folder}/songs.json`);
-        let data = await response.json();
-
+        
         let song_ul = document.querySelector(".play_list ul");
         let cardsHTML = "";
 
@@ -22,6 +35,8 @@ async function getsongs(folder) {
             // ✅ Prevent duplicate songs
             if (!songs.includes(songPath)) {
                 songs.push(songPath);
+                song_ul.innerHTML += `<li class="flex space_between"> ... </li>`;
+            }
 
                 cardsHTML += `<li class="flex space_between">
                                 <div class="card flex space_between center" style="position: relative">
@@ -74,16 +89,25 @@ function attachEventListeners() {
 
 
 const playMusic = (track) => {
-    console.log(track.split("-")[1]);
-    let loc = track.split("-")[1]
+    if (!track) {
+        console.error("Invalid track name:", track);
+        return;
+    }
 
-    curr_song.src = `/songs/${loc.trim()}/spotifydown.com` + track;
+    console.log("Playing:", track);
+    let loc = track.split("-")[1]?.trim();  // Use optional chaining to prevent errors
+
+    if (!loc) {
+        console.error("Invalid song format:", track);
+        return;
+    }
+
+    curr_song.src = `/songs/${loc}/spotifydown.com/${track}`;
     curr_song.play();
-    play.src = "img/pause.svg"
-    document.querySelector(".song_info").innerHTML = track.split("-")[1];
-    document.querySelector(".song_info").innerHTML += "<br>" + "by" + track.split("-")[2].split(".mp3")[0];
-    document.querySelector(".time").innerHTML = "00:00/00:00"
-}
+    play.src = "img/pause.svg";
+    document.querySelector(".song_info").innerHTML = `${track.split("-")[1]}<br>by ${track.split("-")[2]?.split(".mp3")[0] || "Unknown"}`;
+};
+
 
 async function main() {
     //songs = await getsongs(`Bloody Mary`);
@@ -152,19 +176,18 @@ document.querySelector(".hidden_menu").addEventListener("click", () => {
 })
 //prev and next buttons
 previous.addEventListener("click", () => {
-    let index = songs.indexOf(curr_song.src.split(".com")[1])
-    if (index - 1 >= 0) {
-        playMusic(songs[index - 1].split(".com")[0].replaceAll("%20", " ").replaceAll("%2", " "))
+    let index = songs.indexOf(curr_song.src.split(".com")[1]);
+    if (index > 0) {
+        playMusic(songs[index - 1].split(".com")[0].replaceAll("%20", " "));
     }
-})
+});
 
 next.addEventListener("click", () => {
-    let index = songs.indexOf(curr_song.src.split(".com")[1])
-  
-    if (index + 1 <= songs.length) {
-        playMusic(songs[index + 1].split(".com")[0].replaceAll("%20", " ").replaceAll("%2", " "))
+    let index = songs.indexOf(curr_song.src.split(".com")[1]);
+    if (index < songs.length - 1) {  // Fix index check
+        playMusic(songs[index + 1].split(".com")[0].replaceAll("%20", " "));
     }
-})
+});
 
 // volume up and down
 
@@ -206,14 +229,15 @@ document.querySelector(".volume").addEventListener("touchmove", (e) => {
 
 // adding into playlist
 document.addEventListener("click", async (event) => {
-    let card = event.target.closest(".card"); // Check if the clicked element or parent is a card
-    if (card) {
+    let card = event.target.closest(".card");
+    if (card && card.dataset.folder) {  // Check if folder exists
         let folder = card.dataset.folder;
-        let add_songs = await getsongs(`${folder}`);
-        console.log(`/songs/${folder}/`);
+        console.log(`Fetching songs from: ${folder}`);
+        await getsongs(folder);
+    } else {
+        console.error("Folder data is missing.");
     }
 });
-
 
 
 //to fetch all cards
