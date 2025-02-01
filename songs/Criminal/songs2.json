@@ -5,6 +5,12 @@
         "file": "audio.mp3",
         "image": "Criminal_photo.jpg",
         "artist": "Gaurav"
+      },
+      {
+        "name": "Bloody Mary",
+        "file": "audio.mp3",
+        "image": "Bloody Mary_photo.jpg",
+        "artist": "Gaurav"
       }
     ]
   }
