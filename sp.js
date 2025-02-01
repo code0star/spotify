@@ -1,5 +1,5 @@
 let curr_song = new Audio();
-let songs=[];
+let songs = [];
 let curr_folder;
 let cards = [];
 let list = [];
@@ -7,24 +7,24 @@ let list = [];
 async function getsongs(folder) {
 
     console.log("Fetching songs from:", folder);
-    
-        let response = await fetch(`songs/${folder}/songs2.json`);
-        let data = await response.json();
-        console.log("Songs fetched successfully:", data);
 
-        // ✅ Fetch the JSON file inside the folder
-        let song_ul = document.querySelector(".play_list ul");
-        let cardsHTML = "";
+    let response = await fetch(`songs/${folder}/songs2.json`);
+    let data = await response.json();
+    console.log("Songs fetched successfully:", data);
 
-        for (const song of data.songs) {
-            let songPath = `/songs/${folder}/${song.file}`;  // Full song path
-            let imagePath = `/songs/${folder}/${song.image}`; // Full image path
-            console.log(songPath)
+    // ✅ Fetch the JSON file inside the folder
+    let song_ul = document.querySelector(".play_list ul");
+    let cardsHTML = "";
 
-            // ✅ Prevent duplicate songs
-            if (!songs.includes(songPath)) {
-                songs.push(songPath);
-            
+    for (const song of data.songs) {
+        let songPath = `/songs/${folder}/${song.file}`;  // Full song path
+        let imagePath = `/songs/${folder}/${song.image}`; // Full image path
+        console.log(songPath)
+
+        // ✅ Prevent duplicate songs
+        if (!songs.includes(songPath)) {
+            songs.push(songPath);
+
 
             cardsHTML += `<li class="flex space_between">
                             <div class="card flex space_between center" style="position: relative">
@@ -43,13 +43,13 @@ async function getsongs(folder) {
                                 </div>
                             </div>
                           </li>`;
-            }
         }
-        // ✅ Update the DOM in one go for efficiency
-        song_ul.innerHTML += cardsHTML;
-        // ✅ Attach event listeners for play/remove actions
-        attachEventListeners();
-    } 
+    }
+    // ✅ Update the DOM in one go for efficiency
+    song_ul.innerHTML += cardsHTML;
+    // ✅ Attach event listeners for play/remove actions
+    attachEventListeners();
+}
 
 
 // ✅ Function to attach event listeners for play & remove buttons
@@ -148,16 +148,23 @@ document.querySelector(".hidden_menu").addEventListener("click", () => {
 })
 //prev and next buttons
 previous.addEventListener("click", () => {
-    let index = songs.indexOf(curr_song.src.split(".com")[1]);
+    console.log(curr_song.src)
+    console.log(songs)
+   let index = songs.indexOf(curr_song.src.split("spotify")[1]);
+   console.log(index)
     if (index > 0) {
-        playMusic(songs[index - 1].split(".com")[0].replaceAll("%20", " "));
+        playMusic(songs[index - 1].split("/")[1]);
     }
 });
 
 next.addEventListener("click", () => {
-    let index = songs.indexOf(curr_song.src.split(".com")[1]);
-    if (index < songs.length - 1) {  // Fix index check
-        playMusic(songs[index + 1].split(".com")[0].replaceAll("%20", " "));
+    console.log(curr_song.src)
+    console.log(songs)
+    let index = songs.indexOf(curr_song.src.split("spotify")[1]);
+    console.log(curr_song.src.split("spotify"))
+   console.log(index)
+   if (index < songs.length - 1) {  // Fix index check
+       playMusic(songs[index + 1].split("/")[1]);
     }
 });
 
@@ -206,7 +213,7 @@ document.addEventListener("click", async (event) => {
         let folder = card.dataset.folder;
         console.log(`Fetching songs from: ${folder}`);
         await getsongs(folder);
-    } 
+    }
 });
 
 
@@ -216,7 +223,7 @@ async function carrds() {
         // Fetch the songs.json file
         let response = await fetch('songs/songs.json');
         let data = await response.json();
-        
+
         let new_card = document.getElementById("new_card");
         let cardsHTML = "";
 
