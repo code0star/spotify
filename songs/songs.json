@@ -3,13 +3,13 @@
       {
         "name": "Criminal",
         "folder": "criminal",
-        "url": "songs/Criminal/spotifydown.com - Criminal - Britney Spears.mp3",
+        "url": "songs/Criminal/audio.mp3",
         "image": "songs/Criminal/Criminal_photo.jpg"
       },
       {
         "name": "Bloody Mary",
         "folder": "Bloody Mary",
-        "url": "songs/Criminal/spotifydown.com - Bloody Mary - Lady Gaga.mp3",
+        "url": "songs/Bloody Mary/audio.mp3",
         "image": "songs/Bloody Mary/Bloody Mary_photo.jpg"
       }
     ]

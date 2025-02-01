@@ -6,68 +6,51 @@ let list = [];
 
 async function getsongs(folder) {
     console.log("Fetching songs from:", folder);
-    console.log(`Fetching songs from: ${folder}`);
 
-    try {
+    
         let response = await fetch(`/songs/${folder}/songs.json`);
-
-        if (!response.ok) {
-            throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
-        }
-
         let data = await response.json();
         console.log("Songs fetched successfully:", data);
-    } catch (error) {
-        console.error("Error fetching songs:", error);
-    }
 
-
-    try {
         // ✅ Fetch the JSON file inside the folder
-        
         let song_ul = document.querySelector(".play_list ul");
         let cardsHTML = "";
 
         for (const song of data.songs) {
             let songPath = `/songs/${folder}/${song.file}`;  // Full song path
             let imagePath = `/songs/${folder}/${song.image}`; // Full image path
+            console.log(songPath)
 
             // ✅ Prevent duplicate songs
             if (!songs.includes(songPath)) {
                 songs.push(songPath);
-                song_ul.innerHTML += `<li class="flex space_between"> ... </li>`;
-            }
+            
 
-                cardsHTML += `<li class="flex space_between">
-                                <div class="card flex space_between center" style="position: relative">
-                                    <div>
-                                        <img src="img/music.svg" alt="Music">
-                                    </div>
-                                    <div class="left">
-                                        <div>${song.name}</div>
-                                        <div>${song.artist}</div>
-                                    </div>
-                                    <div>
-                                        <div id="k">
-                                            <img src="img/cross.svg" alt="Remove" class="cross">
-                                        </div>
-                                        <img src="img/play_song.svg" alt="Play" id="play_button">
-                                    </div>
+            cardsHTML += `<li class="flex space_between">
+                            <div class="card flex space_between center" style="position: relative">
+                                <div>
+                                    <img src="img/music.svg" alt="Music">
                                 </div>
-                              </li>`;
+                                <div class="left">
+                                    <div>${song.name}</div>
+                                    <div>${song.artist}</div>
+                                </div>
+                                <div>
+                                    <div id="k">
+                                        <img src="img/cross.svg" alt="Remove" class="cross">
+                                    </div>
+                                    <img src="img/play_song.svg" alt="Play" id="play_button">
+                                </div>
+                            </div>
+                          </li>`;
             }
-        
-
+        }
         // ✅ Update the DOM in one go for efficiency
         song_ul.innerHTML += cardsHTML;
-
         // ✅ Attach event listeners for play/remove actions
         attachEventListeners();
+    } 
 
-    } catch (error) {
-        console.error("Error fetching songs:", error);
-    }
-}
 
 // ✅ Function to attach event listeners for play & remove buttons
 function attachEventListeners() {
@@ -89,23 +72,12 @@ function attachEventListeners() {
 
 
 const playMusic = (track) => {
-    if (!track) {
-        console.error("Invalid track name:", track);
-        return;
-    }
-
+    console.log(track)
     console.log("Playing:", track);
-    let loc = track.split("-")[1]?.trim();  // Use optional chaining to prevent errors
-
-    if (!loc) {
-        console.error("Invalid song format:", track);
-        return;
-    }
-
-    curr_song.src = `/songs/${loc}/spotifydown.com/${track}`;
+    curr_song.src = `/songs/${track}/audio.mp3`;
     curr_song.play();
     play.src = "img/pause.svg";
-    document.querySelector(".song_info").innerHTML = `${track.split("-")[1]}<br>by ${track.split("-")[2]?.split(".mp3")[0] || "Unknown"}`;
+    document.querySelector(".song_info").innerHTML = `${track}<br>by ${"Gaurav"}`;
 };
 
 
@@ -234,9 +206,7 @@ document.addEventListener("click", async (event) => {
         let folder = card.dataset.folder;
         console.log(`Fetching songs from: ${folder}`);
         await getsongs(folder);
-    } else {
-        console.error("Folder data is missing.");
-    }
+    } 
 });
 
 
