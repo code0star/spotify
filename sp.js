@@ -5,69 +5,72 @@ let cards = [];
 let list = [];
 
 async function getsongs(folder) {
-    console.log(folder);
-    curr_folder = folder;
-    console.log(`/songs/${folder}/`);
+    console.log("Fetching songs from:", folder);
 
-    let a = await fetch(`/songs/${folder}/`);
-    let response = await a.text();
+    try {
+        // ✅ Fetch the JSON file inside the folder
+        let response = await fetch(`/songs/${folder}/songs.json`);
+        let data = await response.json();
 
-    let diiv = document.createElement("div");
-    diiv.innerHTML = response;
+        let song_ul = document.querySelector(".play_list ul");
+        let cardsHTML = "";
 
-    let as = diiv.getElementsByTagName("a");
-    console.log(as);
+        for (const song of data.songs) {
+            let songPath = `/songs/${folder}/${song.file}`;  // Full song path
+            let imagePath = `/songs/${folder}/${song.image}`; // Full image path
 
-    for (let index = 0; index < as.length; index++) {
-        let element = as[index];
-        if (element.href.endsWith(".mp3")) {
-            console.log(element.href);
-            songPath = element.href.split(".com")[1];  // Extract the song path
-
-            // Check if the song is already in the `songs` array
+            // ✅ Prevent duplicate songs
             if (!songs.includes(songPath)) {
                 songs.push(songPath);
-                let song_ul = document.querySelector(".play_list").getElementsByTagName("ul")[0];
-                
-                // Add the new song to the DOM dynamically
-                song_ul.innerHTML += `<li class="flex space_between">
-                                        <div class="card flex space_between center" style="position: relative">
-                                            <div>
-                                                <img src="img/music.svg" alt="">
-                                            </div>
-                                            <div class="left">
-                                                <div>${songPath.split(".com")[0].replaceAll("%20", " ").replaceAll("%2", " ")}</div>
-                                                <div>Gaurav</div>
-                                            </div>
-                                            <div>
-                                                <div id="k">
-                                                    <img src="img/cross.svg" alt="" class="cross">
-                                                </div>
-                                                <img src="img/play_song.svg" alt="" id="play_button">
-                                            </div>
+
+                cardsHTML += `<li class="flex space_between">
+                                <div class="card flex space_between center" style="position: relative">
+                                    <div>
+                                        <img src="img/music.svg" alt="Music">
+                                    </div>
+                                    <div class="left">
+                                        <div>${song.name}</div>
+                                        <div>${song.artist}</div>
+                                    </div>
+                                    <div>
+                                        <div id="k">
+                                            <img src="img/cross.svg" alt="Remove" class="cross">
                                         </div>
-                                    </li>`;
+                                        <img src="img/play_song.svg" alt="Play" id="play_button">
+                                    </div>
+                                </div>
+                              </li>`;
             }
         }
-    }
-    console.log(songs);
 
-    // Add event listeners for play and remove buttons after updating the DOM
-    Array.from(document.querySelector(".play_list.scroll").getElementsByTagName("li")).forEach(e => {
+        // ✅ Update the DOM in one go for efficiency
+        song_ul.innerHTML += cardsHTML;
+
+        // ✅ Attach event listeners for play/remove actions
+        attachEventListeners();
+
+    } catch (error) {
+        console.error("Error fetching songs:", error);
+    }
+}
+
+// ✅ Function to attach event listeners for play & remove buttons
+function attachEventListeners() {
+    document.querySelectorAll(".play_list li").forEach(e => {
         // Play music
-        e.getElementsByTagName("img")[2].addEventListener("click", () => {
-            playMusic(e.getElementsByClassName("left")[0].getElementsByTagName("div")[0].innerHTML);
+        e.querySelector("#play_button").addEventListener("click", () => {
+            let songName = e.querySelector(".left div").innerText.trim();
+            playMusic(songName);
         });
 
         // Remove song from playlist
-        e.getElementsByTagName("div")[6].getElementsByTagName("img")[0].addEventListener("click", () => {
-            const songToRemove = e.getElementsByClassName("left")[0].getElementsByTagName("div")[0].innerHTML.trim();
-            songs = songs.filter(song => !song.includes( encodeURIComponent(songToRemove)));  // Remove song from songs array
-            e.remove();  // Remove song from Url
+        e.querySelector(".cross").addEventListener("click", () => {
+            let songName = e.querySelector(".left div").innerText.trim();
+            songs = songs.filter(song => !song.includes(encodeURIComponent(songName)));  // Remove from array
+            e.remove();  // Remove from UI
         });
     });
 }
-
 
 
 const playMusic = (track) => {
