@@ -5,8 +5,8 @@ let cards = [];
 let list = [];
 
 async function getsongs(folder) {
+    
     console.log("Fetching songs from:", folder);
-
     
         let response = await fetch(`/songs/${folder}/songs.json`);
         let data = await response.json();
