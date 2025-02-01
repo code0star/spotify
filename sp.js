@@ -56,7 +56,7 @@ async function getsongs(folder) {
                                 </div>
                               </li>`;
             }
-        }
+        
 
         // ✅ Update the DOM in one go for efficiency
         song_ul.innerHTML += cardsHTML;
