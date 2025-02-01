@@ -153,7 +153,7 @@ previous.addEventListener("click", () => {
    let index = songs.indexOf(curr_song.src.split("spotify")[1]);
    console.log(index)
     if (index > 0) {
-        playMusic(songs[index - 1].split("/")[1]);
+        playMusic(songs[index - 1].split("/")[2]);
     }
 });
 
@@ -164,7 +164,7 @@ next.addEventListener("click", () => {
     console.log(curr_song.src.split("spotify"))
    console.log(index)
    if (index < songs.length - 1) {  // Fix index check
-       playMusic(songs[index + 1].split("/")[1]);
+       playMusic(songs[index + 1].split("/")[2]);
     }
 });
 
