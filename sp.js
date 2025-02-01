@@ -8,7 +8,7 @@ async function getsongs(folder) {
 
     console.log("Fetching songs from:", folder);
     
-        let response = await fetch(`songs/${folder}/songs2.json`);
+        let response = await fetch(`spotify/songs/${folder}/songs2.json`);
         let data = await response.json();
         console.log("Songs fetched successfully:", data);
 
@@ -74,7 +74,7 @@ function attachEventListeners() {
 const playMusic = (track) => {
     console.log(track)
     console.log("Playing:", track);
-    curr_song.src = `/songs/${track}/audio.mp3`;
+    curr_song.src = `/spotify/songs/${track}/audio.mp3`;
     curr_song.play();
     play.src = "img/pause.svg";
     document.querySelector(".song_info").innerHTML = `${track}<br>by ${"Gaurav"}`;
@@ -214,7 +214,7 @@ document.addEventListener("click", async (event) => {
 async function carrds() {
     try {
         // Fetch the songs.json file
-        let response = await fetch('songs/songs.json');
+        let response = await fetch('spotify/songs/songs.json');
         let data = await response.json();
         
         let new_card = document.getElementById("new_card");
