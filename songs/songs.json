@@ -1,0 +1,17 @@
+{
+    "songs": [
+      {
+        "name": "Criminal",
+        "folder": "criminal",
+        "url": "songs/Criminal/spotifydown.com - Criminal - Britney Spears.mp3",
+        "image": "songs/Criminal/Criminal_photo.jpg"
+      },
+      {
+        "name": "Bloody Mary",
+        "folder": "Bloody Mary",
+        "url": "songs/Criminal/spotifydown.com - Bloody Mary - Lady Gaga.mp3",
+        "image": "songs/Bloody mary/Bloody mary_photo.jpg"
+      }
+    ]
+  }
+  

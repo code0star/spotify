@@ -215,39 +215,37 @@ document.addEventListener("click", async (event) => {
 
 //to fetch all cards
 async function carrds() {
-    let fold = await fetch(`songs/`)
-    let a = await fold.text()
-    diiv = document.createElement("div")
-    diiv.innerHTML = a;
-    let b = diiv.getElementsByTagName("a")// this is an html collection and can be traversed by a convenctional for loop
-    for (index = 0; index < b.length; index++) {
-        let e = b[index];
-        if (index >= 3) {
-            cards.push(e.href)
+    try {
+        // Fetch the songs.json file
+        let response = await fetch('songs/songs.json');
+        let data = await response.json();
+        
+        let new_card = document.getElementById("new_card");
+        let cardsHTML = "";
+
+        for (const song of data.songs) {
+            let name = song.name;
+            let photo = song.image;
+            let url = song.url;
+
+            cardsHTML += `<div data-folder="${encodeURIComponent(song.folder)}" class="card">
+                            <div class="square">
+                                <div class="fit square">
+                                    <img src="${photo}" alt="${name}" class="fit">
+                                </div>
+                                <div class="play_button">
+                                    <img src="img/play.svg" alt="Play">
+                                </div>
+                            </div>
+                            <div>
+                                <h4>${name}</h4>
+                            </div>
+                        </div>`;
         }
-    }
-    // to display cards
-    let new_card = document.getElementById("new_card")
-    for (const kard of cards) {
-        console.log(kard)
-        console.log( "hi "+kard.split("/")[4])
-        let name = kard.split("/")[4].replaceAll("%20", " ");
-        let data = name.replaceAll(" ", "%20")
-        let photo = `${kard}/${encodeURIComponent(name)}_photo.jpg`;
-        new_card.innerHTML = new_card.innerHTML + `<div data-folder=${data} class="card">
-                                <div  class="square">
-                                    <div class="fit square">
-                                        <img src=${photo} alt=""
-                                            class="fit">
-                                    </div>
-                                    <div class="play_button">
-                                        <img src="img/play.svg" alt="">
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4>${name}</h4>
-                                </div>
-                            </div>`
+
+        new_card.innerHTML = cardsHTML; // Add cards to the page
+    } catch (error) {
+        console.error("Error fetching songs:", error);
     }
 }
 
